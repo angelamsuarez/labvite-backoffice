@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useInvitation } from './InvitationContext';
+import { GridIcon, CloseIcon, HeartIcon, CircleEllipseIcon, MapPinIcon } from './icons';
 
 /* ================================================================
    STYLE DRAWER
@@ -23,12 +24,7 @@ export default function StyleDrawer() {
           onClick={() => setIsOpen(true)}
           className="fixed left-4 top-4 z-50 bg-white/95 backdrop-blur-sm shadow-lg rounded-full px-5 py-2.5 flex items-center gap-2.5 text-charcoal hover:bg-white transition-all hover:shadow-xl font-playfair text-sm"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-            <rect x="3" y="3" width="7" height="7" rx="1.5" />
-            <rect x="14" y="3" width="7" height="7" rx="1.5" />
-            <rect x="3" y="14" width="7" height="7" rx="1.5" />
-            <rect x="14" y="14" width="7" height="7" rx="1.5" />
-          </svg>
+          <GridIcon />
           Styles
         </button>
       )}
@@ -48,9 +44,7 @@ export default function StyleDrawer() {
             onClick={() => setIsOpen(false)}
             className="w-8 h-8 rounded-full hover:bg-charcoal/5 flex items-center justify-center text-charcoal/50 hover:text-charcoal transition-colors"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <CloseIcon />
           </button>
         </div>
 
@@ -248,9 +242,7 @@ function HeartsThumb() {
         <div className="absolute left-[3px] top-0 bottom-0 w-px bg-burgundy/20" />
         {[0, 1, 2].map((i) => (
           <div key={i} className="flex items-center gap-[4px] relative z-10">
-            <svg viewBox="0 0 24 24" fill="currentColor" className="w-[7px] h-[7px] text-burgundy/60">
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-            </svg>
+            <HeartIcon className="w-[7px] h-[7px] text-burgundy/60" />
             <div className="w-[14px] h-[2px] bg-charcoal/10 rounded-full" />
           </div>
         ))}
@@ -266,9 +258,7 @@ function CircleThumb() {
         <span className="text-[8px] text-charcoal/20 font-playfair">4</span>
         <div className="relative">
           <span className="text-[12px] text-charcoal/60 font-playfair font-bold">5</span>
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 20 20" fill="none">
-            <ellipse cx="10" cy="10" rx="9" ry="8" stroke="#7A2B3B" strokeWidth="1.5" fill="none" transform="rotate(-5 10 10)" />
-          </svg>
+          <CircleEllipseIcon className="absolute inset-0 w-full h-full" />
         </div>
         <span className="text-[8px] text-charcoal/20 font-playfair">6</span>
       </div>
@@ -294,9 +284,7 @@ function MapThumb() {
     <div className="w-full h-full bg-sage-dark flex flex-col items-center justify-center gap-[3px] p-2">
       <div className="text-[4px] text-white/50 font-playfair uppercase tracking-wider">Location</div>
       <div className="w-[70%] aspect-[4/3] bg-white/10 rounded-sm flex items-center justify-center">
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-[10px] h-[10px] text-white/30">
-          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-        </svg>
+        <MapPinIcon className="w-[10px] h-[10px] text-white/30" />
       </div>
       <div className="w-[60%] h-[3px] border border-white/20 rounded-sm mt-[1px]" />
     </div>

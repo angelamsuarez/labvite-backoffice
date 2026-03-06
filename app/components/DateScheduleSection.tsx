@@ -4,6 +4,7 @@ import SaveTheDateSection from './SaveTheDateSection';
 import TimelineSection from './TimelineSection';
 import EditableText from './EditableText';
 import { useInvitation } from './InvitationContext';
+import { HeartIcon, CircleEllipseIcon } from './icons';
 
 /* ================================================================
    DATE & SCHEDULE SECTION
@@ -163,13 +164,7 @@ function HeartsTimelineVariant() {
           <div key={event.id} className="relative pl-14 pb-10 last:pb-0">
             {/* Heart marker */}
             <div className="absolute left-[9px] top-1">
-              <svg
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-5 h-5 text-burgundy"
-              >
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-              </svg>
+              <HeartIcon className="w-5 h-5 text-burgundy" />
             </div>
 
             {/* Event content */}
@@ -285,25 +280,7 @@ function CircleCalendarVariant() {
                 >
                   {date.getDate()}
                 </span>
-                {isWedding && (
-                  <svg
-                    className="absolute w-20 h-20"
-                    viewBox="0 0 80 80"
-                    fill="none"
-                  >
-                    <ellipse
-                      cx="40"
-                      cy="42"
-                      rx="34"
-                      ry="30"
-                      stroke="#7A2B3B"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      fill="none"
-                      transform="rotate(-6 40 42)"
-                    />
-                  </svg>
-                )}
+                {isWedding && <CircleEllipseIcon className="absolute w-20 h-20" />}
               </div>
             </div>
           );
