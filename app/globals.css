@@ -1,5 +1,51 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-geist);
+  --color-cream: #F8F5F0;
+  --color-cream-dark: #E8E4DF;
+  --color-sage: #6B7B5E;
+  --color-sage-dark: #4A5A3E;
+  --color-charcoal: #1C1C1C;
+  --color-charcoal-light: #2C2C2C;
+  --color-warm-gray: #9B9B8E;
+  --color-burgundy: #7A2B3B;
+  --font-playfair: var(--playfair-font);
+  --font-script: var(--script-font);
+  --font-handwritten: var(--handwritten-font);
+}
+
+body {
+  background: var(--color-cream-dark);
+  margin: 0;
+  padding: 0;
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-warm-gray);
+  border-radius: 3px;
+}
+
+/* Fade-in animation for the invitation card */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.invitation-card {
+  animation: fadeIn 0.6s ease-out;
 }

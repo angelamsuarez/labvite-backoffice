@@ -1,25 +1,42 @@
-import type { Metadata } from "next"
-import { Geist } from "next/font/google"
-import "./globals.css"
+import type { Metadata } from "next";
+import { Playfair_Display, Great_Vibes, Caveat } from "next/font/google";
+import "./globals.css";
 
-const geist = Geist({
+const playfair = Playfair_Display({
+  variable: "--playfair-font",
   subsets: ["latin"],
-  variable: "--font-geist",
-})
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const greatVibes = Great_Vibes({
+  variable: "--script-font",
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const caveat = Caveat({
+  variable: "--handwritten-font",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
-  title: "Labvite Back Office",
-  description: "Wedding invitation platform — back office",
-}
+  title: "Wedding Invitation Builder",
+  description: "Create your beautiful wedding invitation",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={geist.variable}>
-      <body className="antialiased">{children}</body>
+    <html lang="en" className="scroll-smooth">
+      <body
+        className={`${playfair.variable} ${greatVibes.variable} ${caveat.variable} antialiased`}
+      >
+        {children}
+      </body>
     </html>
-  )
+  );
 }
