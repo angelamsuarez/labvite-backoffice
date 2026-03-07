@@ -76,7 +76,60 @@ export interface InvitationData {
   venueDateTime: string;
   locationImageUrl: string;
   googleMapsUrl: string;
+
+  // Envelope & Details
+  enableEnvelope: boolean;
+  enableDetails: boolean;
+  envelopeTopText: string;
+  envelopeInstruction: string;
+  detailsButtonText: string;
+  detailsPhoto1: string;
+  detailsPhoto2: string;
+  detailsPhoto3: string;
+
+  // Our Story
+  enableOurStory: boolean;
+  ourStoryTitle: string;
+  ourStoryText: string;
+
+  // Section visibility
+  enableSchedule: boolean;
+  enableLocation: boolean;
+  enableDressCode: boolean;
+  enableRsvp: boolean;
+
+  // Details grouping (which sections go inside the Details modal)
+  detailsIncludeSchedule: boolean;
+  detailsIncludeLocation: boolean;
+  detailsIncludeDressCode: boolean;
+
+  // Section colors (bg + text per section)
+  headerBgColor: string;
+  headerTextColor: string;
+  dateBgColor: string;
+  dateTextColor: string;
+  rsvpBgColor: string;
+  rsvpTextColor: string;
+  dressBgColor: string;
+  dressTextColor: string;
+  locationBgColor: string;
+  locationTextColor: string;
+  ourStoryBgColor: string;
+  ourStoryTextColor: string;
+  detailsBgColor: string;
+  detailsTextColor: string;
+  envelopeBgColor: string;
+  envelopeTextColor: string;
 }
+
+export const COLOR_PALETTE = [
+  { label: 'White', value: '#FFFFFF' },
+  { label: 'Cream', value: '#F8F5F0' },
+  { label: 'Dark Sage', value: '#4A5A3E' },
+  { label: 'Raspberry', value: '#451425' },
+  { label: 'Blue', value: '#6B7BA5' },
+  { label: 'Charcoal', value: '#1C1C1C' },
+];
 
 interface InvitationContextType {
   data: InvitationData;
@@ -145,6 +198,45 @@ const defaultData: InvitationData = {
   venueDateTime: 'July 3, 2027 at 16:45',
   locationImageUrl: '',
   googleMapsUrl: 'https://maps.google.com',
+
+  enableEnvelope: false,
+  enableDetails: false,
+  envelopeTopText: "WE'RE GETTING MARRIED",
+  envelopeInstruction: 'CLICK ENVELOPE TO OPEN',
+  detailsButtonText: 'The Details',
+  detailsPhoto1: '',
+  detailsPhoto2: '',
+  detailsPhoto3: '',
+
+  enableOurStory: true,
+  ourStoryTitle: 'Our Story',
+  ourStoryText: 'We met on a beautiful summer day and knew from the start that our journey together would be filled with love, laughter, and endless adventures. After years of building memories, we are overjoyed to celebrate the next chapter of our lives with you.',
+
+  enableSchedule: true,
+  enableLocation: true,
+  enableDressCode: true,
+  enableRsvp: true,
+
+  detailsIncludeSchedule: true,
+  detailsIncludeLocation: true,
+  detailsIncludeDressCode: true,
+
+  headerBgColor: '#F8F5F0',
+  headerTextColor: '#1C1C1C',
+  dateBgColor: '#F8F5F0',
+  dateTextColor: '#1C1C1C',
+  rsvpBgColor: '#1C1C1C',
+  rsvpTextColor: '#FFFFFF',
+  dressBgColor: '#F8F5F0',
+  dressTextColor: '#1C1C1C',
+  locationBgColor: '#4A5A3E',
+  locationTextColor: '#FFFFFF',
+  ourStoryBgColor: '#F8F5F0',
+  ourStoryTextColor: '#1C1C1C',
+  detailsBgColor: '#3A2A1F',
+  detailsTextColor: '#FFFFFF',
+  envelopeBgColor: '#3A2A1F',
+  envelopeTextColor: '#FFFFFF',
 };
 
 /* ── IndexedDB helpers (for large image data) ──────────────── */
@@ -156,6 +248,9 @@ const IMAGE_FIELDS: (keyof InvitationData)[] = [
   'headerImageUrl2',
   'headerImageUrl3',
   'locationImageUrl',
+  'detailsPhoto1',
+  'detailsPhoto2',
+  'detailsPhoto3',
 ];
 
 function openImageDB(): Promise<IDBDatabase> {
@@ -243,7 +338,7 @@ export function InvitationProvider({ children }: { children: ReactNode }) {
       if (val) saveImageToDB(field, val).catch(() => {});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.headerImageUrl, data.headerImageUrl2, data.headerImageUrl3, data.locationImageUrl, isHydrated]);
+  }, [data.headerImageUrl, data.headerImageUrl2, data.headerImageUrl3, data.locationImageUrl, data.detailsPhoto1, data.detailsPhoto2, data.detailsPhoto3, isHydrated]);
 
   const updateField = useCallback(
     <K extends keyof InvitationData>(field: K, value: InvitationData[K]) => {

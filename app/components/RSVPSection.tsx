@@ -65,7 +65,7 @@ function DarkRsvp() {
   const form = useRsvpForm(data.maxGuests);
 
   return (
-    <section className="bg-charcoal py-16 px-8 text-white text-center">
+    <section className="py-16 px-8 text-center" style={{ backgroundColor: data.rsvpBgColor, color: data.rsvpTextColor }}>
       {/* Title */}
       <EditableText
         value={data.rsvpTitle}
@@ -79,31 +79,31 @@ function DarkRsvp() {
         value={data.rsvpSubtitle}
         onChange={(v) => updateField('rsvpSubtitle', v)}
         as="p"
-        className="text-xl font-script text-white/70 mb-3"
+        className="text-xl font-script mb-3" style={{ opacity: 0.7 }}
       />
 
       {/* Deadline */}
-      <p className="text-xs font-playfair text-white/40 mb-10">
+      <p className="text-xs font-playfair mb-10" style={{ opacity: 0.4 }}>
         Let us know by{' '}
         <EditableText
           value={data.rsvpDeadline}
           onChange={(v) => updateField('rsvpDeadline', v)}
           as="span"
-          className="text-white/60"
+          className="" style={{ opacity: 0.6 }}
         />
       </p>
 
       {/* Max guests editor (host only) */}
       {isEditMode && (
         <div className="mb-6 flex items-center justify-center gap-3">
-          <label className="text-xs text-white/50 font-playfair">Max guests per invite:</label>
+          <label className="text-xs font-playfair" style={{ opacity: 0.5 }}>Max guests per invite:</label>
           <input
             type="number"
             min={1}
             max={20}
             value={data.maxGuests}
             onChange={(e) => updateField('maxGuests', Math.max(1, parseInt(e.target.value) || 1))}
-            className="w-14 bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-center text-sm font-playfair focus:outline-none focus:border-white/40"
+            className="w-14 border rounded px-2 py-1 text-center text-sm font-playfair focus:outline-none" style={{ backgroundColor: `${data.rsvpTextColor}1A`, borderColor: `${data.rsvpTextColor}33`, color: data.rsvpTextColor }}
           />
         </div>
       )}
@@ -120,17 +120,17 @@ function DarkRsvp() {
         <form onSubmit={form.handleSubmit} className="max-w-[320px] mx-auto space-y-5">
           {/* Guest rows */}
           {form.guests.map((guest, i) => (
-            <div key={i} className="border border-white/15 rounded-lg p-4 text-left space-y-3">
-              <p className="text-[10px] text-white/40 font-playfair uppercase tracking-wider">
+            <div key={i} className="border rounded-lg p-4 text-left space-y-3" style={{ borderColor: `${data.rsvpTextColor}25` }}>
+              <p className="text-[10px] font-playfair uppercase tracking-wider" style={{ opacity: 0.4 }}>
                 Guest {i + 1} of {data.maxGuests}
               </p>
               {isEditMode ? (
-                <div className="border border-white/30 px-4 py-3">
+                <div className="border px-4 py-3" style={{ borderColor: `${data.rsvpTextColor}4D` }}>
                   <EditableText
                     value={data.rsvpNameLabel}
                     onChange={(v) => updateField('rsvpNameLabel', v)}
                     as="span"
-                    className="text-white/50 text-sm font-playfair"
+                    className="text-sm font-playfair" style={{ opacity: 0.5 }}
                   />
                 </div>
               ) : (
@@ -139,7 +139,8 @@ function DarkRsvp() {
                   placeholder={data.rsvpNameLabel}
                   value={guest.name}
                   onChange={(e) => form.updateGuest(i, { name: e.target.value })}
-                  className="w-full bg-transparent border border-white/25 px-4 py-3 text-white placeholder-white/40 outline-none focus:border-white/50 transition-colors font-playfair text-sm rounded"
+                  className="w-full bg-transparent border px-4 py-3 outline-none transition-colors font-playfair text-sm rounded"
+                  style={{ borderColor: `${data.rsvpTextColor}40`, color: data.rsvpTextColor }}
                 />
               )}
 
@@ -147,43 +148,41 @@ function DarkRsvp() {
               <div className="flex gap-4">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <div
-                    className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${
-                      guest.attending === 'yes' ? 'border-white' : 'border-white/30'
-                    }`}
+                    className="w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors"
+                    style={{ borderColor: guest.attending === 'yes' ? data.rsvpTextColor : `${data.rsvpTextColor}4D` }}
                     onClick={() => !isEditMode && form.updateGuest(i, { attending: 'yes' })}
                   >
-                    {guest.attending === 'yes' && <div className="w-2 h-2 rounded-full bg-white" />}
+                    {guest.attending === 'yes' && <div className="w-2 h-2 rounded-full" style={{ backgroundColor: data.rsvpTextColor }} />}
                   </div>
                   {i === 0 ? (
                     <EditableText
                       value={data.rsvpAttendingLabel}
                       onChange={(v) => updateField('rsvpAttendingLabel', v)}
                       as="span"
-                      className="text-xs font-playfair text-white/80"
+                      className="text-xs font-playfair" style={{ opacity: 0.8 }}
                     />
                   ) : (
-                    <span className="text-xs font-playfair text-white/80">{data.rsvpAttendingLabel}</span>
+                    <span className="text-xs font-playfair" style={{ opacity: 0.8 }}>{data.rsvpAttendingLabel}</span>
                   )}
                 </label>
 
                 <label className="flex items-center gap-2 cursor-pointer">
                   <div
-                    className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${
-                      guest.attending === 'no' ? 'border-white' : 'border-white/30'
-                    }`}
+                    className="w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors"
+                    style={{ borderColor: guest.attending === 'no' ? data.rsvpTextColor : `${data.rsvpTextColor}4D` }}
                     onClick={() => !isEditMode && form.updateGuest(i, { attending: 'no' })}
                   >
-                    {guest.attending === 'no' && <div className="w-2 h-2 rounded-full bg-white" />}
+                    {guest.attending === 'no' && <div className="w-2 h-2 rounded-full" style={{ backgroundColor: data.rsvpTextColor }} />}
                   </div>
                   {i === 0 ? (
                     <EditableText
                       value={data.rsvpNotAttendingLabel}
                       onChange={(v) => updateField('rsvpNotAttendingLabel', v)}
                       as="span"
-                      className="text-xs font-playfair text-white/80"
+                      className="text-xs font-playfair" style={{ opacity: 0.8 }}
                     />
                   ) : (
-                    <span className="text-xs font-playfair text-white/80">{data.rsvpNotAttendingLabel}</span>
+                    <span className="text-xs font-playfair" style={{ opacity: 0.8 }}>{data.rsvpNotAttendingLabel}</span>
                   )}
                 </label>
               </div>
@@ -196,15 +195,15 @@ function DarkRsvp() {
               value={data.rsvpCommentsLabel}
               onChange={(v) => updateField('rsvpCommentsLabel', v)}
               as="p"
-              className="text-sm font-playfair text-white/70"
+              className="text-sm font-playfair" style={{ opacity: 0.7 }}
             />
             {isEditMode ? (
-              <div className="border border-white/25 rounded px-4 py-3 min-h-[80px]">
+              <div className="border rounded px-4 py-3 min-h-[80px]" style={{ borderColor: `${data.rsvpTextColor}40` }}>
                 <EditableText
                   value={data.rsvpCommentsPlaceholder}
                   onChange={(v) => updateField('rsvpCommentsPlaceholder', v)}
                   as="span"
-                  className="text-white/30 text-sm font-playfair"
+                  className="text-sm font-playfair" style={{ opacity: 0.3 }}
                 />
               </div>
             ) : (
@@ -213,7 +212,8 @@ function DarkRsvp() {
                 value={form.comments}
                 onChange={(e) => form.setComments(e.target.value)}
                 rows={3}
-                className="w-full bg-transparent border border-white/25 rounded px-4 py-3 text-white placeholder-white/30 outline-none focus:border-white/50 transition-colors font-playfair text-sm resize-none"
+                className="w-full bg-transparent border rounded px-4 py-3 outline-none transition-colors font-playfair text-sm resize-none"
+                style={{ borderColor: `${data.rsvpTextColor}40`, color: data.rsvpTextColor }}
               />
             )}
           </div>
@@ -222,11 +222,12 @@ function DarkRsvp() {
           <button
             type="submit"
             disabled={isEditMode}
-            className={`w-full border border-white/50 py-3 tracking-[0.2em] font-playfair text-sm transition-all rounded ${
+            className={`w-full border py-3 tracking-[0.2em] font-playfair text-sm transition-all rounded ${
               isEditMode
-                ? 'text-white/50 cursor-default'
-                : 'text-white hover:bg-white hover:text-charcoal cursor-pointer'
+                ? 'cursor-default'
+                : 'cursor-pointer'
             }`}
+            style={{ borderColor: `${data.rsvpTextColor}80`, color: data.rsvpTextColor, opacity: isEditMode ? 0.5 : 1 }}
           >
             <EditableText
               value={data.rsvpButtonText}
@@ -252,7 +253,7 @@ function LightRsvp() {
   const form = useRsvpForm(data.maxGuests);
 
   return (
-    <section className="bg-cream-dark py-14 px-6">
+    <section className="py-14 px-6" style={{ backgroundColor: data.rsvpBgColor, color: data.rsvpTextColor }}>
       <div className="max-w-[420px] mx-auto flex flex-col md:flex-row gap-8">
         {/* ── Left info panel ── */}
         <div className="md:w-2/5 text-center md:text-left flex flex-col justify-center">
@@ -260,16 +261,16 @@ function LightRsvp() {
             value={data.rsvpTitle}
             onChange={(v) => updateField('rsvpTitle', v)}
             as="h2"
-            className="text-4xl font-playfair text-charcoal mb-4 tracking-wide"
+            className="text-4xl font-playfair mb-4 tracking-wide"
           />
 
-          <p className="text-xs font-playfair text-charcoal/50 leading-relaxed mb-3">
+          <p className="text-xs font-playfair leading-relaxed mb-3" style={{ opacity: 0.5 }}>
             Let us know if you&apos;re able to make it or not by{' '}
             <EditableText
               value={data.rsvpDeadline}
               onChange={(v) => updateField('rsvpDeadline', v)}
               as="span"
-              className="text-charcoal/70"
+              className="" style={{ opacity: 0.7 }}
             />
             .
           </p>
@@ -278,7 +279,7 @@ function LightRsvp() {
             value={data.rsvpNote}
             onChange={(v) => updateField('rsvpNote', v)}
             as="p"
-            className="text-xs font-playfair text-charcoal/50 italic leading-relaxed"
+            className="text-xs font-playfair italic leading-relaxed" style={{ opacity: 0.5 }}
           />
 
           {/* Max guests editor (host only) */}

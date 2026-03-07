@@ -6,11 +6,6 @@ import EditableText from './EditableText';
 import { useInvitation } from './InvitationContext';
 import { HeartIcon, CircleEllipseIcon } from './icons';
 
-/* ================================================================
-   DATE & SCHEDULE SECTION
-   Wraps save-the-date + timeline with variant switching.
-   ================================================================ */
-
 export default function DateScheduleSection() {
   const { data } = useInvitation();
 
@@ -35,7 +30,6 @@ export default function DateScheduleSection() {
 
 /* ================================================================
    VARIANT 2  –  Dark Schedule
-   Dark background · horizontal row of time/event pairs
    ================================================================ */
 
 function DarkScheduleVariant() {
@@ -43,13 +37,13 @@ function DarkScheduleVariant() {
     useInvitation();
 
   return (
-    <section className="bg-charcoal py-14 px-6 text-white text-center">
+    <section className="py-14 px-6 text-center" style={{ backgroundColor: data.dateBgColor, color: data.dateTextColor }}>
       {/* ── Subtitle ── */}
       <EditableText
         value={data.scheduleSubtitle}
         onChange={(v) => updateField('scheduleSubtitle', v)}
         as="p"
-        className="text-[10px] tracking-[0.3em] uppercase text-white/40 font-playfair mb-3"
+        className="text-[10px] tracking-[0.3em] uppercase font-playfair mb-3" style={{ opacity: 0.4 }}
       />
 
       {/* ── Title ── */}
@@ -70,12 +64,12 @@ function DarkScheduleVariant() {
               as="p"
               className="text-lg font-playfair font-semibold mb-2"
             />
-            <div className="w-8 h-px bg-white/20 mx-auto mb-2" />
+            <div className="w-8 h-px mx-auto mb-2" style={{ backgroundColor: 'currentColor', opacity: 0.2 }} />
             <EditableText
               value={event.title}
               onChange={(v) => updateEvent(event.id, { title: v })}
               as="p"
-              className="text-[8px] tracking-[0.15em] uppercase text-white/50 font-playfair leading-relaxed"
+              className="text-[8px] tracking-[0.15em] uppercase font-playfair leading-relaxed" style={{ opacity: 0.5 }}
             />
             {isEditMode && (
               <button
@@ -92,7 +86,7 @@ function DarkScheduleVariant() {
       {isEditMode && (
         <button
           onClick={addEvent}
-          className="mt-8 bg-white/10 text-white/60 px-4 py-2 rounded-full text-xs font-playfair hover:bg-white/20 transition-colors"
+          className="mt-8 px-4 py-2 rounded-full text-xs font-playfair transition-colors" style={{ backgroundColor: `${data.dateTextColor}1A`, color: data.dateTextColor, opacity: 0.6 }}
         >
           + Add Event
         </button>
@@ -103,8 +97,6 @@ function DarkScheduleVariant() {
 
 /* ================================================================
    VARIANT 3  –  Hearts Timeline
-   Calendar row at top · vertical line with heart markers ·
-   events with script font · burgundy colour scheme
    ================================================================ */
 
 const MONTH_NAMES = [
@@ -128,9 +120,9 @@ function HeartsTimelineVariant() {
   const dateInputValue = `${data.weddingYear}-${String(data.weddingMonth + 1).padStart(2, '0')}-${String(data.weddingDay).padStart(2, '0')}`;
 
   return (
-    <section className="bg-cream py-12 px-6">
+    <section className="py-12 px-6" style={{ backgroundColor: data.dateBgColor, color: data.dateTextColor }}>
       {/* ── Month in script ── */}
-      <p className="text-center text-2xl font-script text-charcoal/80 mb-4">
+      <p className="text-center text-2xl font-script mb-4" style={{ opacity: 0.8 }}>
         our {MONTH_NAMES[data.weddingMonth].toLowerCase()}
       </p>
 
@@ -145,9 +137,10 @@ function HeartsTimelineVariant() {
               key={i}
               className={`w-10 h-10 flex items-center justify-center rounded-full text-lg font-playfair transition-colors ${
                 isWedding
-                  ? 'bg-burgundy text-white font-bold'
-                  : 'text-charcoal/40'
+                  ? 'font-bold'
+                  : ''
               }`}
+              style={isWedding ? { backgroundColor: data.dateTextColor, color: data.dateBgColor } : { opacity: 0.4 }}
             >
               {date.getDate()}
             </div>
@@ -158,13 +151,13 @@ function HeartsTimelineVariant() {
       {/* ── Hearts timeline ── */}
       <div className="relative max-w-[300px] mx-auto">
         {/* Vertical line */}
-        <div className="absolute left-[18px] top-0 bottom-0 w-px bg-burgundy/25" />
+        <div className="absolute left-[18px] top-0 bottom-0 w-px" style={{ backgroundColor: data.dateTextColor, opacity: 0.25 }} />
 
         {data.events.map((event) => (
           <div key={event.id} className="relative pl-14 pb-10 last:pb-0">
             {/* Heart marker */}
             <div className="absolute left-[9px] top-1">
-              <HeartIcon className="w-5 h-5 text-burgundy" />
+              <HeartIcon className="w-5 h-5" />
             </div>
 
             {/* Event content */}
@@ -172,13 +165,13 @@ function HeartsTimelineVariant() {
               value={event.time}
               onChange={(v) => updateEvent(event.id, { time: v })}
               as="p"
-              className="text-2xl font-script text-charcoal/70 mb-0"
+              className="text-2xl font-script mb-0" style={{ opacity: 0.7 }}
             />
             <EditableText
               value={event.title}
               onChange={(v) => updateEvent(event.id, { title: v })}
               as="p"
-              className="text-lg font-script text-burgundy"
+              className="text-lg font-script"
             />
 
             {isEditMode && (
@@ -196,7 +189,7 @@ function HeartsTimelineVariant() {
           <div className="flex justify-center mt-6 relative z-10">
             <button
               onClick={addEvent}
-              className="bg-burgundy/10 text-burgundy px-4 py-2 rounded-full text-xs font-playfair hover:bg-burgundy/20 transition-colors"
+              className="px-4 py-2 rounded-full text-xs font-playfair transition-colors" style={{ backgroundColor: `${data.dateTextColor}1A`, color: data.dateTextColor }}
             >
               + Add Event
             </button>
@@ -231,7 +224,6 @@ function HeartsTimelineVariant() {
 
 /* ================================================================
    VARIANT 4  –  Circle Calendar
-   Three large day numbers · hand-drawn circle · "save our date!"
    ================================================================ */
 
 const DAY_NAMES_FULL = [
@@ -252,7 +244,7 @@ function CircleCalendarVariant() {
   const dateInputValue = `${data.weddingYear}-${String(data.weddingMonth + 1).padStart(2, '0')}-${String(data.weddingDay).padStart(2, '0')}`;
 
   return (
-    <section className="bg-cream py-12 px-6 text-center">
+    <section className="py-12 px-6 text-center" style={{ backgroundColor: data.dateBgColor, color: data.dateTextColor }}>
       {/* ── Three day columns ── */}
       <div className="flex justify-center items-end gap-0 max-w-[340px] mx-auto">
         {threeDays.map((date, i) => {
@@ -261,22 +253,24 @@ function CircleCalendarVariant() {
             <div
               key={i}
               className={`flex-1 py-4 px-2 ${
-                isWedding ? 'border-x border-charcoal/15' : ''
+                isWedding ? 'border-x' : ''
               }`}
+              style={isWedding ? { borderColor: `${data.dateTextColor}25` } : undefined}
             >
-              <p className="text-[10px] font-playfair uppercase tracking-[0.15em] text-charcoal/45 mb-1">
+              <p className="text-[10px] font-playfair uppercase tracking-[0.15em] mb-1" style={{ opacity: 0.45 }}>
                 {DAY_NAMES_FULL[date.getDay()]}
               </p>
-              <p className="text-[9px] font-playfair text-charcoal/35 mb-2">
+              <p className="text-[9px] font-playfair mb-2" style={{ opacity: 0.35 }}>
                 {MONTH_NAMES[date.getMonth()].toLowerCase()}
               </p>
               <div className="relative flex items-center justify-center">
                 <span
                   className={`text-6xl font-playfair leading-none ${
                     isWedding
-                      ? 'text-charcoal font-bold'
-                      : 'text-charcoal/25'
+                      ? 'font-bold'
+                      : ''
                   }`}
+                  style={{ opacity: isWedding ? 1 : 0.25 }}
                 >
                   {date.getDate()}
                 </span>
@@ -288,7 +282,7 @@ function CircleCalendarVariant() {
       </div>
 
       {/* ── "save our date!" ── */}
-      <p className="text-4xl font-script text-charcoal mt-8 mb-4">
+      <p className="text-4xl font-script mt-8 mb-4">
         save our date!
       </p>
 

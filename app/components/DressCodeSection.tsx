@@ -74,14 +74,14 @@ function ColorPaletteEditor({
                   className="sr-only"
                 />
               </label>
-              {colors.length > 1 && (
+             
                 <button
                   onClick={() => removeColor(i)}
                   className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-400/80 text-white text-[8px] flex items-center justify-center hover:bg-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   ×
                 </button>
-              )}
+              
             </>
           ) : (
             <div
@@ -121,18 +121,18 @@ function PastelDressCode() {
   const { data, updateField } = useInvitation();
 
   return (
-    <section className="bg-cream py-12 px-6 text-center">
+    <section className="py-12 px-6 text-center" style={{ backgroundColor: data.dressBgColor, color: data.dressTextColor }}>
       <EditableText
         value={data.dressCodeTitle}
         onChange={(v) => updateField('dressCodeTitle', v)}
         as="h2"
-        className="text-3xl font-script text-charcoal mb-4"
+        className="text-3xl font-script mb-4"
       />
       <EditableText
         value={data.dressCodeSubtitle}
         onChange={(v) => updateField('dressCodeSubtitle', v)}
         as="p"
-        className="text-xs font-playfair text-charcoal/50 leading-relaxed max-w-[280px] mx-auto mb-8"
+        className="text-xs font-playfair leading-relaxed max-w-[280px] mx-auto mb-8" style={{ opacity: 0.5 }}
       />
       <ColorPaletteEditor
         colors={data.dressCodeColors}
@@ -153,18 +153,18 @@ function CleanDressCode() {
   const { data, updateField } = useInvitation();
 
   return (
-    <section className="bg-white py-12 px-6 text-center">
+    <section className="py-12 px-6 text-center" style={{ backgroundColor: data.dressBgColor, color: data.dressTextColor }}>
       <EditableText
         value={data.dressCodeTitle}
         onChange={(v) => updateField('dressCodeTitle', v)}
         as="h2"
-        className="text-3xl font-script text-charcoal mb-4"
+        className="text-3xl font-script mb-4"
       />
       <EditableText
         value={data.dressCodeSubtitle}
         onChange={(v) => updateField('dressCodeSubtitle', v)}
         as="p"
-        className="text-xs font-playfair text-charcoal/45 leading-relaxed max-w-[280px] mx-auto mb-8"
+        className="text-xs font-playfair leading-relaxed max-w-[280px] mx-auto mb-8" style={{ opacity: 0.45 }}
       />
       <ColorPaletteEditor
         colors={data.dressCodeColors}
@@ -185,7 +185,7 @@ function DarkDressCode() {
   const { data, updateField } = useInvitation();
 
   return (
-    <section className="bg-sage-dark py-12 px-6 text-center text-white">
+    <section className="py-12 px-6 text-center" style={{ backgroundColor: data.dressBgColor, color: data.dressTextColor }}>
       <EditableText
         value={data.dressCodeTitle}
         onChange={(v) => updateField('dressCodeTitle', v)}
@@ -196,7 +196,7 @@ function DarkDressCode() {
         value={data.dressCodeSubtitle}
         onChange={(v) => updateField('dressCodeSubtitle', v)}
         as="p"
-        className="text-xs font-playfair text-white/60 leading-relaxed max-w-[280px] mx-auto mb-8"
+        className="text-xs font-playfair leading-relaxed max-w-[280px] mx-auto mb-8" style={{ opacity: 0.6 }}
       />
       <ColorPaletteEditor
         colors={data.dressCodeColors}

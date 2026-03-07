@@ -54,9 +54,9 @@ export default function SaveTheDateSection() {
   const dateInputValue = `${data.weddingYear}-${String(data.weddingMonth + 1).padStart(2, '0')}-${String(data.weddingDay).padStart(2, '0')}`;
 
   return (
-    <section className="bg-cream py-16 px-6 text-center">
+    <section className="py-16 px-6 text-center" style={{ backgroundColor: data.dateBgColor, color: data.dateTextColor }}>
       {/* Month Name */}
-      <h2 className="text-2xl tracking-[0.4em] uppercase font-playfair text-charcoal mb-10">
+      <h2 className="text-2xl tracking-[0.4em] uppercase font-playfair mb-10">
         {MONTH_NAMES[data.weddingMonth]}
       </h2>
 
@@ -65,7 +65,7 @@ export default function SaveTheDateSection() {
         {DAY_NAMES.map((day) => (
           <span
             key={day}
-            className="text-sm italic font-playfair text-charcoal/60"
+            className="text-sm italic font-playfair" style={{ opacity: 0.6 }}
           >
             {day}
           </span>
@@ -87,8 +87,9 @@ export default function SaveTheDateSection() {
             >
               <span
                 className={`text-xl font-playfair relative z-10 ${
-                  isWeddingDay ? 'font-bold text-charcoal' : ''
-                } ${!isCurrentMonth ? 'text-charcoal/30' : 'text-charcoal/80'}`}
+                  isWeddingDay ? 'font-bold' : ''
+                }`}
+                style={{ opacity: !isCurrentMonth ? 0.3 : isWeddingDay ? 1 : 0.8 }}
               >
                 {date.getDate()}
               </span>
@@ -100,11 +101,11 @@ export default function SaveTheDateSection() {
 
       {/* Dotted vertical line from heart to text */}
       <div className="flex flex-col items-center mt-2">
-        <div className="h-20 border-l border-dotted border-charcoal/40" />
+        <div className="h-20 border-l border-dotted" style={{ borderColor: 'currentColor', opacity: 0.4 }} />
       </div>
 
       {/* "save the date" in cursive script */}
-      <p className="text-5xl font-script text-charcoal mt-2">save the date</p>
+      <p className="text-5xl font-script mt-2">save the date</p>
 
       {/* Date picker – edit mode only */}
       {isEditMode && (

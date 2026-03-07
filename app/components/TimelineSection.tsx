@@ -8,11 +8,11 @@ export default function TimelineSection() {
     useInvitation();
 
   return (
-    <section className="bg-cream py-12 px-4">
+    <section className="py-12 px-4" style={{ backgroundColor: data.dateBgColor, color: data.dateTextColor }}>
       <div className="relative max-w-[360px] mx-auto">
         {/* Vertical center line */}
         <div className="absolute left-1/2 top-0 bottom-0 -translate-x-px">
-          <div className="w-px h-full border-l border-dotted border-charcoal/25" />
+          <div className="w-px h-full border-l border-dotted" style={{ borderColor: 'currentColor', opacity: 0.25 }} />
         </div>
 
         {/* Events */}
@@ -34,13 +34,13 @@ export default function TimelineSection() {
                       value={event.time}
                       onChange={(v) => updateEvent(event.id, { time: v })}
                       as="p"
-                      className="text-lg font-playfair font-semibold text-charcoal leading-tight"
+                      className="text-lg font-playfair font-semibold leading-tight"
                     />
                     <EditableText
                       value={event.title}
                       onChange={(v) => updateEvent(event.id, { title: v })}
                       as="p"
-                      className="text-sm font-playfair text-charcoal/60 mt-1 leading-snug"
+                      className="text-sm font-playfair mt-1 leading-snug" style={{ opacity: 0.6 }}
                     />
                   </>
                 )}
@@ -48,7 +48,7 @@ export default function TimelineSection() {
 
               {/* Center emoji */}
               <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center relative z-10">
-                <div className="w-10 h-10 rounded-full bg-cream flex items-center justify-center text-xl">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center text-xl" style={{ backgroundColor: data.dateBgColor }}>
                   {isEditMode ? (
                     <input
                       value={event.emoji}
@@ -74,13 +74,13 @@ export default function TimelineSection() {
                       value={event.time}
                       onChange={(v) => updateEvent(event.id, { time: v })}
                       as="p"
-                      className="text-lg font-playfair font-semibold text-charcoal leading-tight"
+                      className="text-lg font-playfair font-semibold leading-tight"
                     />
                     <EditableText
                       value={event.title}
                       onChange={(v) => updateEvent(event.id, { title: v })}
                       as="p"
-                      className="text-sm font-playfair text-charcoal/60 mt-1 leading-snug"
+                      className="text-sm font-playfair mt-1 leading-snug" style={{ opacity: 0.6 }}
                     />
                   </>
                 )}
