@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+// ---------------------------------------------------------------------------
+// User — synced from Cognito on first login, updated on subsequent logins
+// ---------------------------------------------------------------------------
+model User {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  cognitoId  String   @unique           // Cognito "sub" claim
+  email      String   @unique
+  name       String?
+  picture    String?
+  provider   String   @default("cognito") // "cognito" | "google"
+  role       String   @default("USER")    // "USER" | "ADMIN"
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("users")
+}
