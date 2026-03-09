@@ -51,7 +51,6 @@ export async function POST(request: Request) {
         { status: 400 }
       )
     }
-
     const message = error instanceof Error ? error.message : "Registration failed"
     return NextResponse.json({ error: message }, { status: 500 })
   }

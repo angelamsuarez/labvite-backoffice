@@ -9,8 +9,10 @@ import { SESSION_COOKIE } from "@/lib/auth/session"
 const PUBLIC_PATHS = [
   "/login",
   "/register",
+  "/confirm",
   "/api/auth/login",
   "/api/auth/register",
+  "/api/auth/confirm",
   "/api/auth/google",
   "/api/auth/callback",
   "/api/auth/refresh",

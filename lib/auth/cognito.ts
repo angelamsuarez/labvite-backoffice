@@ -2,6 +2,8 @@ import {
   CognitoIdentityProviderClient,
   InitiateAuthCommand,
   SignUpCommand,
+  ConfirmSignUpCommand,
+  ResendConfirmationCodeCommand,
   GlobalSignOutCommand,
   type AuthFlowType,
 } from "@aws-sdk/client-cognito-identity-provider"
@@ -17,6 +19,14 @@ const cognitoClient = new CognitoIdentityProviderClient({
 
 const CLIENT_ID = process.env.COGNITO_CLIENT_ID!
 const CLIENT_SECRET = process.env.COGNITO_CLIENT_SECRET ?? ""
+
+function getHostedDomain(): string {
+  const rawDomain = process.env.COGNITO_DOMAIN ?? ""
+  if (!rawDomain) {
+    throw new Error("Missing COGNITO_DOMAIN environment variable")
+  }
+  return rawDomain.replace(/^https?:\/\//, "").replace(/\/+$/, "")
+}
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -110,6 +120,31 @@ export async function registerUser(
 }
 
 /**
+ * Confirms a user's account using the verification code sent by Cognito.
+ */
+export async function confirmSignUp(email: string, code: string): Promise<void> {
+  const command = new ConfirmSignUpCommand({
+    ClientId: CLIENT_ID,
+    Username: email,
+    ConfirmationCode: code,
+    ...(computeSecretHash(email) && { SecretHash: computeSecretHash(email) }),
+  })
+  await cognitoClient.send(command)
+}
+
+/**
+ * Resends the confirmation code email to the user.
+ */
+export async function resendConfirmationCode(email: string): Promise<void> {
+  const command = new ResendConfirmationCodeCommand({
+    ClientId: CLIENT_ID,
+    Username: email,
+    ...(computeSecretHash(email) && { SecretHash: computeSecretHash(email) }),
+  })
+  await cognitoClient.send(command)
+}
+
+/**
  * Refresh tokens using a valid refresh token.
  */
 export async function refreshTokens(
@@ -154,7 +189,7 @@ export async function globalSignOut(accessToken: string): Promise<void> {
  * The user is redirected to this URL from /api/auth/google.
  */
 export function buildGoogleAuthUrl(): string {
-  const domain = process.env.COGNITO_DOMAIN!
+  const domain = getHostedDomain()
   const callbackUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback`
 
   const params = new URLSearchParams({
@@ -173,7 +208,7 @@ export function buildGoogleAuthUrl(): string {
  * Called server-side from /api/auth/callback.
  */
 export async function exchangeCodeForTokens(code: string): Promise<CognitoTokens> {
-  const domain = process.env.COGNITO_DOMAIN!
+  const domain = getHostedDomain()
   const callbackUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback`
 
   const body = new URLSearchParams({

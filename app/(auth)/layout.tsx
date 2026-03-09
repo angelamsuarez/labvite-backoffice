@@ -13,7 +13,6 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           <span className="text-2xl">💌</span>
           <span className="text-xl font-semibold text-gray-900 tracking-tight">Labvite</span>
         </div>
-        <p className="mt-1 text-sm text-gray-500">Back Office</p>
       </div>
 
       {/* Card */}

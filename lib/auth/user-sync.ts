@@ -29,7 +29,9 @@ export async function syncUserFromToken(idToken: string): Promise<void> {
       },
     })
   } catch (error) {
-    // Non-critical — log but don't block the auth flow
     console.error("[syncUserFromToken] Failed to sync user to DB:", error)
+    // In development, throw so the error is visible immediately
+    if (process.env.NODE_ENV === "development") throw error
+    // In production, don't block the auth flow — the user still gets a valid session
   }
 }
