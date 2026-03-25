@@ -1,14 +1,14 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme inline {
-  --color-cream: #F8F5F0;
-  --color-cream-dark: #E8E4DF;
-  --color-sage: #6B7B5E;
-  --color-sage-dark: #4A5A3E;
-  --color-charcoal: #1C1C1C;
-  --color-charcoal-light: #2C2C2C;
-  --color-warm-gray: #9B9B8E;
-  --color-burgundy: #7A2B3B;
+  --color-cream: #f8f5f0;
+  --color-cream-dark: #e8e4df;
+  --color-sage: #6b7b5e;
+  --color-sage-dark: #4a5a3e;
+  --color-charcoal: #1c1c1c;
+  --color-charcoal-light: #2c2c2c;
+  --color-warm-gray: #9b9b8e;
+  --color-burgundy: #7a2b3b;
   --font-playfair: var(--playfair-font);
   --font-script: var(--script-font);
   --font-handwritten: var(--handwritten-font);
@@ -48,4 +48,65 @@ body {
 
 .invitation-card {
   animation: fadeIn 0.6s ease-out;
+}
+
+/* ── Scroll reveal animations ───────────────────────────── */
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Delay variants */
+.scroll-reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+.scroll-reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+.scroll-reveal-delay-3 {
+  transition-delay: 0.3s;
+}
+
+/* ── Circle draw animation (calendar variant) ───────────── */
+
+@keyframes drawCircle {
+  from {
+    stroke-dashoffset: 220;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.circle-draw ellipse {
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+}
+
+.circle-draw.animate ellipse {
+  animation: drawCircle 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ── Timeline stagger item ──────────────────────────────── */
+
+.timeline-stagger {
+  opacity: 0;
+  transform: translateY(32px) scale(0.97);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.timeline-stagger.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }

@@ -1,8 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
-import { useInvitation } from './InvitationContext';
-import { ImageIcon } from './icons';
+import { useInvitation } from '../context/InvitationContext';
+import { ImageIcon } from '../icons';
 
 interface EditableImageProps {
   src: string;
@@ -10,11 +10,7 @@ interface EditableImageProps {
   className?: string;
 }
 
-export default function EditableImage({
-  src,
-  onChange,
-  className = '',
-}: EditableImageProps) {
+export default function EditableImage({ src, onChange, className = '' }: EditableImageProps) {
   const { isEditMode } = useInvitation();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -34,15 +30,9 @@ export default function EditableImage({
       className={`relative ${className} ${isEditMode ? 'cursor-pointer group' : ''}`}
       onClick={() => isEditMode && fileInputRef.current?.click()}
     >
-      {src ? (
+      {src && (
         /* eslint-disable-next-line @next/next/no-img-element */
-        <img
-          src={src}
-          alt="Wedding photo"
-          className="w-full h-full object-cover"
-        />
-      ) : (
-        <div className="w-full h-full bg-gradient-to-b from-sage to-sage-dark" />
+        <img src={src} alt="Wedding photo" className="w-full h-full object-cover" />
       )}
 
       {/* Edit overlay */}

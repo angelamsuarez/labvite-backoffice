@@ -1,7 +1,7 @@
 'use client';
 
-import { useInvitation } from './InvitationContext';
-import { HeartOutlineIcon } from './icons';
+import { useInvitation } from '../context/InvitationContext';
+import { HeartOutlineIcon } from '../icons';
 
 const MONTH_NAMES = [
   'January',
@@ -29,11 +29,7 @@ export default function SaveTheDateSection() {
   const { data, isEditMode, updateField } = useInvitation();
 
   // Build the week that contains the wedding date (Sunday → Saturday)
-  const weddingDate = new Date(
-    data.weddingYear,
-    data.weddingMonth,
-    data.weddingDay,
-  );
+  const weddingDate = new Date(data.weddingYear, data.weddingMonth, data.weddingDay);
   const dayOfWeek = weddingDate.getDay(); // 0 = Sunday
 
   const weekDates = Array.from({ length: 7 }, (_, i) => {
@@ -54,7 +50,10 @@ export default function SaveTheDateSection() {
   const dateInputValue = `${data.weddingYear}-${String(data.weddingMonth + 1).padStart(2, '0')}-${String(data.weddingDay).padStart(2, '0')}`;
 
   return (
-    <section className="py-16 px-6 text-center" style={{ backgroundColor: data.dateBgColor, color: data.dateTextColor }}>
+    <section
+      className="py-16 px-6 text-center"
+      style={{ backgroundColor: data.dateBgColor, color: data.dateTextColor }}
+    >
       {/* Month Name */}
       <h2 className="text-2xl tracking-[0.4em] uppercase font-playfair mb-10">
         {MONTH_NAMES[data.weddingMonth]}
@@ -63,10 +62,7 @@ export default function SaveTheDateSection() {
       {/* Day-of-week Headers */}
       <div className="grid grid-cols-7 gap-1 max-w-[340px] mx-auto mb-3">
         {DAY_NAMES.map((day) => (
-          <span
-            key={day}
-            className="text-sm italic font-playfair" style={{ opacity: 0.6 }}
-          >
+          <span key={day} className="text-sm italic font-playfair" style={{ opacity: 0.6 }}>
             {day}
           </span>
         ))}
@@ -76,19 +72,13 @@ export default function SaveTheDateSection() {
       <div className="grid grid-cols-7 gap-1 max-w-[340px] mx-auto">
         {weekDates.map((date, i) => {
           const isWeddingDay =
-            date.getDate() === data.weddingDay &&
-            date.getMonth() === data.weddingMonth;
+            date.getDate() === data.weddingDay && date.getMonth() === data.weddingMonth;
           const isCurrentMonth = date.getMonth() === data.weddingMonth;
 
           return (
-            <div
-              key={i}
-              className="relative flex items-center justify-center py-2"
-            >
+            <div key={i} className="relative flex items-center justify-center py-2">
               <span
-                className={`text-xl font-playfair relative z-10 ${
-                  isWeddingDay ? 'font-bold' : ''
-                }`}
+                className={`text-xl font-playfair relative z-10 ${isWeddingDay ? 'font-bold' : ''}`}
                 style={{ opacity: !isCurrentMonth ? 0.3 : isWeddingDay ? 1 : 0.8 }}
               >
                 {date.getDate()}
@@ -99,13 +89,8 @@ export default function SaveTheDateSection() {
         })}
       </div>
 
-      {/* Dotted vertical line from heart to text */}
-      <div className="flex flex-col items-center mt-2">
-        <div className="h-20 border-l border-dotted" style={{ borderColor: 'currentColor', opacity: 0.4 }} />
-      </div>
-
       {/* "save the date" in cursive script */}
-      <p className="text-5xl font-script mt-2">save the date</p>
+      <p className="text-5xl font-script mt-8">save the date</p>
 
       {/* Date picker – edit mode only */}
       {isEditMode && (

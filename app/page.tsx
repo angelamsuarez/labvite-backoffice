@@ -1,10 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import {
-  InvitationProvider,
-  useInvitation,
-} from './components/InvitationContext';
+import { useEffect } from 'react';
+import { useInvitation } from './context/InvitationContext';
 import HeaderSection from './components/HeaderSection';
 import DateScheduleSection from './components/DateScheduleSection';
 import LocationSection from './components/LocationSection';
@@ -14,7 +11,11 @@ import StyleDrawer from './components/StyleDrawer';
 import EnvelopeCover from './components/EnvelopeCover';
 import DetailsSection from './components/DetailsSection';
 import OurStorySection from './components/OurStorySection';
-import { EyeIcon, PencilIcon } from './components/icons';
+import CountdownSection from './components/CountdownSection';
+import GallerySection from './components/GallerySection';
+import SongSuggestSection from './components/SongSuggestSection';
+import { EyeIcon, PencilIcon } from './icons';
+import ScrollReveal from './components/ScrollReveal';
 
 /* ── Edit / Preview toggle ─────────────────────────────────── */
 
@@ -46,20 +47,19 @@ function EditModeToggle() {
 /* ── Invitation card ───────────────────────────────────────── */
 
 function InvitationCard() {
-  const { data } = useInvitation();
-  const [envelopeOpened, setEnvelopeOpened] = useState(false);
+  const { data, isEditMode, envelopeOpened, setEnvelopeOpened } = useInvitation();
 
   // Reset envelope state when enableEnvelope changes
   useEffect(() => {
     if (!data.enableEnvelope) {
       setEnvelopeOpened(true);
-    } else {
-      setEnvelopeOpened(false);
     }
-  }, [data.enableEnvelope]);
+  }, [data.enableEnvelope, setEnvelopeOpened]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center sm:py-8 sm:px-4">
+    <div
+      className={`min-h-screen flex flex-col items-center ${isEditMode ? 'sm:py-8 sm:px-4' : ''}`}
+    >
       <EditModeToggle />
       <StyleDrawer />
 
@@ -70,26 +70,83 @@ function InvitationCard() {
 
       {/* Main invitation */}
       {envelopeOpened && (
-        <div className="invitation-card w-full max-w-[420px] sm:shadow-2xl overflow-hidden sm:rounded-lg">
-          <HeaderSection />
-          {data.enableOurStory && <OurStorySection />}
+        <div
+          className={`invitation-card w-full overflow-hidden ${isEditMode ? 'max-w-[420px] sm:shadow-2xl sm:rounded-lg' : 'max-w-[600px]'}`}
+        >
+          <ScrollReveal>
+            <HeaderSection />
+          </ScrollReveal>
+
+          {data.enableOurStory && (
+            <ScrollReveal>
+              <OurStorySection />
+            </ScrollReveal>
+          )}
 
           {data.enableDetails ? (
             <>
-              <DetailsSection />
-              {/* Sections NOT grouped under details render standalone */}
-              {data.enableSchedule && !data.detailsIncludeSchedule && <DateScheduleSection />}
-              {data.enableLocation && !data.detailsIncludeLocation && <LocationSection />}
-              {data.enableDressCode && !data.detailsIncludeDressCode && <DressCodeSection />}
+              <ScrollReveal>
+                <DetailsSection />
+              </ScrollReveal>
+              {data.enableSchedule && !data.detailsIncludeSchedule && (
+                <ScrollReveal>
+                  <DateScheduleSection />
+                </ScrollReveal>
+              )}
+              {data.enableLocation && !data.detailsIncludeLocation && (
+                <ScrollReveal>
+                  <LocationSection />
+                </ScrollReveal>
+              )}
+              {data.enableDressCode && !data.detailsIncludeDressCode && (
+                <ScrollReveal>
+                  <DressCodeSection />
+                </ScrollReveal>
+              )}
             </>
           ) : (
             <>
-              {data.enableSchedule && <DateScheduleSection />}
-              {data.enableLocation && <LocationSection />}
-              {data.enableDressCode && <DressCodeSection />}
+              {data.enableSchedule && (
+                <ScrollReveal>
+                  <DateScheduleSection />
+                </ScrollReveal>
+              )}
+              {data.enableLocation && (
+                <ScrollReveal>
+                  <LocationSection />
+                </ScrollReveal>
+              )}
+              {data.enableDressCode && (
+                <ScrollReveal>
+                  <DressCodeSection />
+                </ScrollReveal>
+              )}
             </>
           )}
-          {data.enableRsvp && <RSVPSection />}
+
+          {data.enableCountdown && (
+            <ScrollReveal>
+              <CountdownSection />
+            </ScrollReveal>
+          )}
+
+          {data.enableGallery && (
+            <ScrollReveal>
+              <GallerySection />
+            </ScrollReveal>
+          )}
+
+          {data.enableSongs && (
+            <ScrollReveal>
+              <SongSuggestSection />
+            </ScrollReveal>
+          )}
+
+          {data.enableRsvp && (
+            <ScrollReveal>
+              <RSVPSection />
+            </ScrollReveal>
+          )}
         </div>
       )}
     </div>
@@ -99,9 +156,5 @@ function InvitationCard() {
 /* ── Page ───────────────────────────────────────────────────── */
 
 export default function Home() {
-  return (
-    <InvitationProvider>
-      <InvitationCard />
-    </InvitationProvider>
-  );
+  return <InvitationCard />;
 }

@@ -32,48 +32,46 @@ const BASE_URL = 'https://dummyjson.com/products';
 const LIMIT = 20;
 
 function getUrl(url: string, skip: number) {
-  const params = { skip: skip.toString(), limit: LIMIT.toString() }
+  const params = { skip: skip.toString(), limit: LIMIT.toString() };
   const searchParams = new URLSearchParams(params);
 
-  return `${url}?${searchParams.toString()}`
+  return `${url}?${searchParams.toString()}`;
 }
 
-
 export default function TestPage() {
-  const [products, setProducts] = useState<Product[]>([])
+  const [products, setProducts] = useState<Product[]>([]);
   const [isFetching, setIsFetching] = useState(false);
   const [total, setTotal] = useState(0);
-  const divsito = useRef(null)
+  const divsito = useRef(null);
 
-  async function getData (skip: number) {
+  async function getData(skip: number) {
     try {
-      setIsFetching(true)
-      const url = getUrl(BASE_URL, skip)
-      const response = await fetch(url)
-      
+      setIsFetching(true);
+      const url = getUrl(BASE_URL, skip);
+      const response = await fetch(url);
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
-      const data = (await response.json()) as ProductsAPIResponse
-      setTotal(data.total)
-      setProducts(prevData => [...prevData, ...data.products])
-      console.log(data, 'response')
-    } catch(e) {
-      console.log('there has been an error', e)
+
+      const data = (await response.json()) as ProductsAPIResponse;
+      setTotal(data.total);
+      setProducts((prevData) => [...prevData, ...data.products]);
+      console.log(data, 'response');
+    } catch (e) {
+      console.log('there has been an error', e);
     } finally {
-      setIsFetching(false)
+      setIsFetching(false);
     }
   }
 
   useEffect(() => {
     getData(0);
-  }, [])
-
+  }, []);
 
   const options = {
     root: null,
-    rootMargin: "0px",
+    rootMargin: '0px',
   };
 
   const intersectionCallback: IntersectionObserverCallback = (entries, observer) => {
@@ -82,49 +80,58 @@ export default function TestPage() {
         getData(products.length);
       }
     });
-  }
+  };
 
   useEffect(() => {
     if (!divsito.current) {
-      return
+      return;
     }
     const observer = new IntersectionObserver(intersectionCallback, options);
-    observer.observe(divsito.current)
-
+    observer.observe(divsito.current);
 
     return () => observer.disconnect();
-  }, [divsito, isFetching])
+  }, [divsito, isFetching]);
 
   return (
-   <div className="text-black bg-white w-screen h-screen">
-
-    {products.map((product, index) => {
-      return <div key={product.id}> {product.id} ---- {product.title}</div>
-    })}
-    <div ref={divsito}/>
-   </div>
+    <div className="text-black bg-white w-screen h-screen">
+      {products.map((product, index) => {
+        return (
+          <div key={product.id}>
+            {' '}
+            {product.id} ---- {product.title}
+          </div>
+        );
+      })}
+      <div ref={divsito} />
+    </div>
   );
-} 
+}
 
-
-function Paginator ({ pages, handleClick }: { pages: number | null, handleClick: (index:number) => void}){
-
+function Paginator({
+  pages,
+  handleClick,
+}: {
+  pages: number | null;
+  handleClick: (index: number) => void;
+}) {
   if (!pages) {
-    return <div>Loading Pages...</div>
+    return <div>Loading Pages...</div>;
   }
 
- 
-
   return (
- <div className='flex flex-row'>
- { Array.from({ length: pages }).map((_, index) => {
-  console.log('hello', index)
-  return <button key={index} onClick={() => handleClick(index)} className="text-black bg-white w-screen border-solid border-black bg-[red]" >{index + 1}</button>
-})}
- 
- </div>
-  )
- 
-
-
+    <div className="flex flex-row">
+      {Array.from({ length: pages }).map((_, index) => {
+        console.log('hello', index);
+        return (
+          <button
+            key={index}
+            onClick={() => handleClick(index)}
+            className="text-black bg-white w-screen border-solid border-black bg-[red]"
+          >
+            {index + 1}
+          </button>
+        );
+      })}
+    </div>
+  );
 }

@@ -1,18 +1,67 @@
 'use client';
 
+import { useRef, useEffect, useState } from 'react';
 import EditableText from './EditableText';
-import { useInvitation } from './InvitationContext';
+import { useInvitation } from '../context/InvitationContext';
 
-export default function TimelineSection() {
-  const { data, isEditMode, updateEvent, addEvent, removeEvent } =
-    useInvitation();
+/* ── Scroll-reveal wrapper for timeline items ── */
+function StaggerItem({
+  children,
+  className = '',
+}: {
+  children: React.ReactNode;
+  index?: number;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const { isEditMode } = useInvitation();
+
+  useEffect(() => {
+    if (isEditMode) {
+      setIsVisible(true);
+      return;
+    }
+
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.3, rootMargin: '0px 0px -60px 0px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [isEditMode]);
 
   return (
-    <section className="py-12 px-4" style={{ backgroundColor: data.dateBgColor, color: data.dateTextColor }}>
+    <div ref={ref} className={`timeline-stagger ${isVisible ? 'visible' : ''} ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+export default function TimelineSection() {
+  const { data, isEditMode, updateEvent, addEvent, removeEvent } = useInvitation();
+
+  return (
+    <section
+      className="py-12 px-4"
+      style={{ backgroundColor: data.dateBgColor, color: data.dateTextColor }}
+    >
       <div className="relative max-w-[360px] mx-auto">
         {/* Vertical center line */}
         <div className="absolute left-1/2 top-0 bottom-0 -translate-x-px">
-          <div className="w-px h-full border-l border-dotted" style={{ borderColor: 'currentColor', opacity: 0.25 }} />
+          <div
+            className="w-px h-full border-l border-dotted"
+            style={{ borderColor: 'currentColor', opacity: 0.25 }}
+          />
         </div>
 
         {/* Events */}
@@ -20,14 +69,13 @@ export default function TimelineSection() {
           const isLeft = index % 2 === 0;
 
           return (
-            <div
+            <StaggerItem
               key={event.id}
+              index={index}
               className="relative flex items-center mb-10 last:mb-0"
             >
               {/* Left side */}
-              <div
-                className={`w-[calc(50%-24px)] ${isLeft ? 'text-right pr-4' : ''}`}
-              >
+              <div className={`w-[calc(50%-24px)] ${isLeft ? 'text-right pr-4' : ''}`}>
                 {isLeft && (
                   <>
                     <EditableText
@@ -40,7 +88,8 @@ export default function TimelineSection() {
                       value={event.title}
                       onChange={(v) => updateEvent(event.id, { title: v })}
                       as="p"
-                      className="text-sm font-playfair mt-1 leading-snug" style={{ opacity: 0.6 }}
+                      className="text-sm font-playfair mt-1 leading-snug"
+                      style={{ opacity: 0.6 }}
                     />
                   </>
                 )}
@@ -48,13 +97,14 @@ export default function TimelineSection() {
 
               {/* Center emoji */}
               <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center relative z-10">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center text-xl" style={{ backgroundColor: data.dateBgColor }}>
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-xl"
+                  style={{ backgroundColor: data.dateBgColor }}
+                >
                   {isEditMode ? (
                     <input
                       value={event.emoji}
-                      onChange={(e) =>
-                        updateEvent(event.id, { emoji: e.target.value })
-                      }
+                      onChange={(e) => updateEvent(event.id, { emoji: e.target.value })}
                       className="w-10 h-10 text-center bg-transparent outline-none text-xl rounded-full hover:bg-charcoal/5 focus:bg-charcoal/5 transition-colors"
                       maxLength={2}
                     />
@@ -65,9 +115,7 @@ export default function TimelineSection() {
               </div>
 
               {/* Right side */}
-              <div
-                className={`w-[calc(50%-24px)] ${!isLeft ? 'text-left pl-4' : ''}`}
-              >
+              <div className={`w-[calc(50%-24px)] ${!isLeft ? 'text-left pl-4' : ''}`}>
                 {!isLeft && (
                   <>
                     <EditableText
@@ -80,7 +128,8 @@ export default function TimelineSection() {
                       value={event.title}
                       onChange={(v) => updateEvent(event.id, { title: v })}
                       as="p"
-                      className="text-sm font-playfair mt-1 leading-snug" style={{ opacity: 0.6 }}
+                      className="text-sm font-playfair mt-1 leading-snug"
+                      style={{ opacity: 0.6 }}
                     />
                   </>
                 )}
@@ -96,7 +145,7 @@ export default function TimelineSection() {
                   ×
                 </button>
               )}
-            </div>
+            </StaggerItem>
           );
         })}
 

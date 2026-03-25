@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useInvitation } from './InvitationContext';
+import { useInvitation } from '../context/InvitationContext';
 
 export interface EditableTextProps {
   value: string;
@@ -21,7 +21,11 @@ export default function EditableText({
   const { isEditMode } = useInvitation();
 
   if (!isEditMode) {
-    return <Tag className={className} style={style}>{value}</Tag>;
+    return (
+      <Tag className={className} style={style}>
+        {value}
+      </Tag>
+    );
   }
 
   return (
